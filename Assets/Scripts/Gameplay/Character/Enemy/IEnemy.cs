@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class IEnemy
+public interface IEnemy
 {
-    
+    public void Die();
+    public void Move();
 }

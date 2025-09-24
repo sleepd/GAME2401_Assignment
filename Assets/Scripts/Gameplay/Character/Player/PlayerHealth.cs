@@ -1,6 +1,6 @@
 public class PlayerHealth : CharacterHealth
 {
-    public PlayerHealth(Character character) : base(character)
+    public PlayerHealth(Character character, int maxHealth) : base(character, maxHealth)
     {
     }
 }

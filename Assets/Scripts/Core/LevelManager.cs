@@ -6,6 +6,15 @@ public class LevelManager : Singleton<LevelManager>
     public event Action<int, int> OnScoreChanged;
     private int collectedItemNumber;
     private int score;
+    public PlayerController Player { get; private set; }
+
+    public override void Awake()
+    {
+        base.Awake();
+        
+        Player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        if (Player == null) Debug.LogError("[LevelManager] Can't find Player!");
+    }
 
     void Start()
     {
