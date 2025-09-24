@@ -14,11 +14,17 @@ public class PlayerOnGroundState : PlayerState
     {
         base.Update();
         HandleMove();
+        UseWeapon();
     }
 
     public void HandleMove()
     {
         player.movement.HandleMoveInput();
         player.movement.Move();
+    }
+
+    public void UseWeapon()
+    {
+        player.weaponManager.UseWeapon();
     }
 }
