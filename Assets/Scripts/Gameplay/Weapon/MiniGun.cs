@@ -1,11 +1,9 @@
 using UnityEngine;
-public class MiniGun : WeaponBase
+public class MiniGun : ProjectileWeapon
 {
-    [SerializeField] GameObject bullet;
-    [SerializeField] float attackRadius;
     protected override void OnUse()
     {
-        Transform nearest = weaponManager.player.enemyLocator.FindNearestEnemy(attackRadius);
+        Transform nearest = weaponManager.player.enemyLocator.FindNearestEnemy(_attackRadius);
 
         Vector3 targetDir;
         if (nearest == null) targetDir = weaponManager.player.transform.forward;
@@ -15,8 +13,6 @@ public class MiniGun : WeaponBase
         {
             targetDir = transform.forward;
         }
-
-        Quaternion rotation = Quaternion.LookRotation(targetDir.normalized, Vector3.up);
-        Instantiate(bullet, transform.position, rotation);
+        SpawnProjectile(targetDir);
     }
 }

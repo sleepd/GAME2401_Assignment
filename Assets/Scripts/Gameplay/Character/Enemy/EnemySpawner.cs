@@ -51,7 +51,8 @@ public class EnemySpawner : MonoBehaviour
         }
 
         GameObject enemyGO = Instantiate(settings.enemyPrefab);
-        EnemyBase enemy = new(settings, enemyGO);
+        EnemyBase enemy = enemyGO.GetComponent<EnemyBase>();
+        enemy.enemySpawner = this;
         LevelManager levelManager = LevelManager.Instance;
         Vector3 spawnPosition = transform.position;
 
@@ -64,5 +65,10 @@ public class EnemySpawner : MonoBehaviour
 
         enemyGO.transform.position = spawnPosition;
         enemies.Add(enemy);
+    }
+
+    public void RemoveEnemy(EnemyBase enemy)
+    {
+        enemies.Remove(enemy);
     }
 }

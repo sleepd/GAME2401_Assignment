@@ -1,29 +1,25 @@
 using UnityEngine;
 
-public class EnemyBase : IEnemy
+public class EnemyBase :MonoBehaviour, IEnemy
 {
-    EnemySettings settings;
-    GameObject model;
+    [SerializeField]EnemySettings _settings;
+    int _health;
+    public EnemySpawner enemySpawner;
 
-    public EnemyBase(EnemySettings enemySettings, GameObject model)
+    void OnEnable()
     {
-        settings = enemySettings;
-        this.model = model;
+        _health = _settings.maxHealth;
     }
     public void Die()
     {
-        throw new System.NotImplementedException();
+        enemySpawner.RemoveEnemy(this);
+        //Temporary Destroy
+        Destroy(gameObject);
     }
 
     public void Move()
     {
-        if (model == null)
-        {
-            Debug.LogWarning("[EnemyBase] Model is null; cannot move.");
-            return;
-        }
-
-        if (settings == null)
+        if (_settings == null)
         {
             Debug.LogWarning("[EnemyBase] Settings not assigned; cannot move.");
             return;
@@ -35,19 +31,27 @@ public class EnemyBase : IEnemy
             return;
         }
 
-        Transform enemyTransform = model.transform;
         Transform playerTransform = levelManager.Player.transform;
 
         Vector3 targetPosition = playerTransform.position;
-        Vector3 currentPosition = enemyTransform.position;
+        Vector3 currentPosition = transform.position;
 
-        enemyTransform.position = Vector3.MoveTowards(currentPosition, targetPosition, settings.moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(currentPosition, targetPosition, _settings.moveSpeed * Time.deltaTime);
 
-        Vector3 lookDirection = playerTransform.position - enemyTransform.position;
+        Vector3 lookDirection = playerTransform.position - transform.position;
         lookDirection.y = 0f;
         if (lookDirection.sqrMagnitude > 0.0001f)
         {
-            enemyTransform.rotation = Quaternion.LookRotation(lookDirection);
+            transform.rotation = Quaternion.LookRotation(lookDirection);
         }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        _health -= amount;
+        _health = Mathf.Max(0, _health);
+
+        if (_health == 0)
+            Die();
     }
 }

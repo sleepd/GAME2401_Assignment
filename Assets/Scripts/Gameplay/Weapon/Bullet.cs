@@ -1,25 +1,56 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IProjectile
 {
     [SerializeField] float speed = 10f;
     [SerializeField] float lifetime = 3f;
+    [SerializeField] LayerMask hitMask;
 
     float _lifeRemaining;
+    Vector3 _lastPos;
 
-    void Start()
+    public ObjectPool<IProjectile> pool { get; set; }
+    public IWeapon weapon { get; set; }
+
+
+    void OnEnable()
     {
         _lifeRemaining = lifetime;
+        _lastPos = transform.position;
     }
 
     void Update()
     {
-        transform.position += transform.forward * (speed * Time.deltaTime);
-
         _lifeRemaining -= Time.deltaTime;
         if (_lifeRemaining <= 0f)
         {
-            Destroy(gameObject);
+            Relase();
+            return;
         }
+
+        Vector3 currentPos = transform.position;
+        Vector3 nextPos = currentPos + transform.forward * speed * Time.deltaTime;
+        Vector3 dir = nextPos - currentPos;
+        float dist = dir.magnitude;
+
+
+        if (Physics.Raycast(currentPos, dir.normalized, out RaycastHit hit, dist, hitMask))
+        {
+            if (hit.collider.TryGetComponent<IEnemy>(out var enemy))
+            {
+                enemy.TakeDamage(weapon.damage);
+                Relase();
+            }
+            return;
+        }
+        
+        transform.position = nextPos;
+        _lastPos = currentPos;
+    }
+
+    void Relase()
+    {
+        pool.Release(this);
     }
 }

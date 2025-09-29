@@ -6,4 +6,5 @@ public interface IWeapon
     void SetWeaponManager(PlayerWeaponManager manager);
     bool CanUse { get; }
     event Action OnUsed;
+    int damage { get; }
 }

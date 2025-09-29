@@ -3,8 +3,10 @@ using UnityEngine;
 public class PlayerController : Character
 {
     [SerializeField] float _moveSpeed;
-    [SerializeField] GameObject defaultWeapon;
-    [SerializeField] int maxHealth;
+    [SerializeField] GameObject _defaultWeapon;
+    [SerializeField] int _maxHealth;
+    [SerializeField] Transform _weaponSolt;
+    public Transform weaponSolt { get => _weaponSolt; }
     public float moveSpeed { get => _moveSpeed; }
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerMovement movement { get; private set; }
@@ -19,7 +21,7 @@ public class PlayerController : Character
     {
         characterController = GetComponent<CharacterController>();
         base.Awake();
-        health = new(this, maxHealth);
+        health = new(this, _maxHealth);
         stateMachine = new(this);
         inputManager = new(this);
         movement = new(this);
@@ -36,7 +38,7 @@ public class PlayerController : Character
     void Start()
     {
         stateMachine.ChangeState(stateMachine.idleState);
-        GameObject weaponGO = Instantiate(defaultWeapon, transform);
+        GameObject weaponGO = Instantiate(_defaultWeapon, weaponSolt.position, transform.rotation, transform);
         IWeapon weapon = weaponGO.GetComponent<IWeapon>();
         weaponManager.AddWeapon(weapon);
     }
