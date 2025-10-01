@@ -17,11 +17,16 @@ public class EnemyLocator
         foreach (var hit in hits)
         {
             float dist = Vector3.Distance(player.transform.position, hit.transform.position);
-            if (dist < minDist)
+            if (dist < 0.1f)
             {
-                minDist = dist;
                 nearest = hit.transform;
+                break;
             }
+            if (dist < minDist)
+                {
+                    minDist = dist;
+                    nearest = hit.transform;
+                }
         }
         return nearest;
     }

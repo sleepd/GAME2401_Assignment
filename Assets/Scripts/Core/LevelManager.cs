@@ -24,7 +24,7 @@ public class LevelManager : Singleton<LevelManager>
     public void PlayerCollect(Collectable item)
     {
         collectedItemNumber++;
-        score += item.score;
+        score += item.Value;
         OnScoreChanged?.Invoke(score, collectedItemNumber);
     }
 

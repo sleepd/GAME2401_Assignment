@@ -7,4 +7,5 @@ public class EnemySettings : ScriptableObject
     public float moveSpeed;
     public int damage;
     public int maxHealth;
+    public float minDist;
 }

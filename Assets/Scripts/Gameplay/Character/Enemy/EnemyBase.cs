@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class EnemyBase :MonoBehaviour, IEnemy
+public class EnemyBase : MonoBehaviour, IEnemy
 {
-    [SerializeField]EnemySettings _settings;
+    [SerializeField] EnemySettings _settings;
     int _health;
     public EnemySpawner enemySpawner;
 
@@ -10,6 +10,7 @@ public class EnemyBase :MonoBehaviour, IEnemy
     {
         _health = _settings.maxHealth;
     }
+
     public void Die()
     {
         enemySpawner.RemoveEnemy(this);
@@ -35,15 +36,24 @@ public class EnemyBase :MonoBehaviour, IEnemy
 
         Vector3 targetPosition = playerTransform.position;
         Vector3 currentPosition = transform.position;
+        Vector3 toPlayer = targetPosition - currentPosition;
 
-        transform.position = Vector3.MoveTowards(currentPosition, targetPosition, _settings.moveSpeed * Time.deltaTime);
-
-        Vector3 lookDirection = playerTransform.position - transform.position;
+        Vector3 lookDirection = toPlayer;
         lookDirection.y = 0f;
         if (lookDirection.sqrMagnitude > 0.0001f)
         {
             transform.rotation = Quaternion.LookRotation(lookDirection);
         }
+
+        float minDistance = Mathf.Max(0f, _settings.minDist);
+        float minDistanceSquared = minDistance * minDistance;
+
+        if (toPlayer.sqrMagnitude <= minDistanceSquared)
+        {
+            return;
+        }
+
+        transform.position = Vector3.MoveTowards(currentPosition, targetPosition, _settings.moveSpeed * Time.deltaTime);
     }
 
     public void TakeDamage(int amount)
