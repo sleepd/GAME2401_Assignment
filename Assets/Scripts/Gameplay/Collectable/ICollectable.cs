@@ -8,4 +8,6 @@ public interface ICollectable
     void SetPool(ObjectPool<ICollectable> pool);
     void SetValue(int value);
     void Move();
+    void Init();
+    bool IsCollected { get; }
 }

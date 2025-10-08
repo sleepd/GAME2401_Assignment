@@ -41,7 +41,10 @@ public abstract class ProjectileWeapon : WeaponBase
             },
             actionOnDestroy: (obj) =>
             {
-                Destroy(obj.gameObject);
+                if (obj is Component component && component != null)
+                {
+                    Destroy(component.gameObject);
+                }
             },
             collectionCheck: false,
             defaultCapacity: _poolSize,

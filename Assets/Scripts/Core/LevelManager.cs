@@ -4,8 +4,8 @@ using UnityEngine;
 public class LevelManager : Singleton<LevelManager>
 {
     public event Action<int, int> OnScoreChanged;
-    private int collectedItemNumber;
-    private int score;
+    private int _collectedItemNumber;
+    private int _score;
     public PlayerController Player { get; private set; }
 
     public override void Awake()
@@ -18,14 +18,14 @@ public class LevelManager : Singleton<LevelManager>
 
     void Start()
     {
-        collectedItemNumber = 0;
-        score = 0;
+        _collectedItemNumber = 0;
+        _score = 0;
     }
-    public void PlayerCollect(Collectable item)
+    public void UpdateScore(int amount)
     {
-        collectedItemNumber++;
-        score += item.Value;
-        OnScoreChanged?.Invoke(score, collectedItemNumber);
+        _collectedItemNumber++;
+        _score = amount;
+        OnScoreChanged?.Invoke(_score, _collectedItemNumber);
     }
 
     protected override void OnDestroy()

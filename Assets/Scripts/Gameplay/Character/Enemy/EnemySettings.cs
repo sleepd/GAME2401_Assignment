@@ -8,4 +8,5 @@ public class EnemySettings : ScriptableObject
     public int damage;
     public int maxHealth;
     public float minDist;
+    public int value;
 }

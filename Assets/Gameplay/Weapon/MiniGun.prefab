@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d134f17344a05ad4baaac2b70385cd42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 0.2
-  _damage: 1
+  cooldown: 0.1
+  _damage: 2
   _bulletPrefab: {fileID: 4157293366012693471, guid: 29ad356a2071d55418de6e1fddb70212, type: 3}
-  _attackRadius: 10
+  _attackRadius: 5
   _poolSize: 20
   _poolMaxSize: 40

@@ -59,8 +59,9 @@ public class EnemySpawner : MonoBehaviour
         if (levelManager != null && levelManager.Player != null)
         {
             Vector3 playerPosition = levelManager.Player.transform.position;
-            Vector2 randomOffset = Random.insideUnitCircle * spawnRadius;
-            spawnPosition = new Vector3(playerPosition.x + randomOffset.x, playerPosition.y, playerPosition.z + randomOffset.y);
+            float angle = Random.Range(0f, Mathf.PI * 2f);
+            Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * spawnRadius;
+            spawnPosition = playerPosition + offset;
         }
 
         enemyGO.transform.position = spawnPosition;
@@ -72,3 +73,4 @@ public class EnemySpawner : MonoBehaviour
         enemies.Remove(enemy);
     }
 }
+

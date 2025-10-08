@@ -13,7 +13,12 @@ public class EnemyBase : MonoBehaviour, IEnemy
 
     public void Die()
     {
+        // Leave a gem
+        ICollectable gem = GemManager.Instance.GetGem();
+        gem.gameObject.transform.position = transform.position;
+        gem.SetValue(_settings.value);
         enemySpawner.RemoveEnemy(this);
+        Physics.SyncTransforms();
         //Temporary Destroy
         Destroy(gameObject);
     }
