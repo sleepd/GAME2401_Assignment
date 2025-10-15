@@ -2,21 +2,31 @@ using UnityEngine;
 
 public class CharacterHealth : ICharacterHealth
 {
-    public int health { get; private set; }
-    public int maxHealth { get; private set; }
-    public Character character { get; private set; }
-    public CharacterHealth(Character character, int maxHealth)
+    public int Health { get; private set; }
+    public int MaxHealth { get; private set; }
+    public Character Character { get; private set; }
+    private float _invincibleTime;
+    private float _lastDamageTime = -999f;
+    public CharacterHealth(Character character, int maxHealth, float invincibleTime)
     {
-        this.character = character;
-        this.maxHealth = maxHealth;
-        health = maxHealth;
+        Character = character;
+        MaxHealth = maxHealth;
+        Health = maxHealth;
+        _invincibleTime = invincibleTime;
     }
-    public void TakeDamage(int damage)
+    public virtual bool TakeDamage(int damage)
     {
-        throw new System.NotImplementedException();
+        if (Time.time - _lastDamageTime < _invincibleTime)
+            return false;
+
+        Health -= damage;
+        Health = Mathf.Max(0, Health);
+        _lastDamageTime = Time.time;
+        if (Health < 0) Dead();
+        return true;
     }
 
-    public void Dead()
+    public virtual void Dead()
     {
         throw new System.NotImplementedException();
     }

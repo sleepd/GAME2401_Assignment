@@ -1,6 +1,6 @@
 public class PlayerHealth : CharacterHealth
 {
-    public PlayerHealth(Character character, int maxHealth) : base(character, maxHealth)
+    public PlayerHealth(PlayerController character, int maxHealth, float invincibleTime) : base(character, maxHealth, invincibleTime)
     {
     }
 }
